@@ -1,15 +1,16 @@
 import java.util.Scanner;
 
-// deleting equal strings in array of 10 elements and replace then with null
+// deleting equal strings in array of N elements and replace then with null
 public class DeleteEqualStrings {
     public static String[] strings;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        int arrSize = 10;
+        
+        strings = new String[arrSize];
 
-        strings = new String[10];
-
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < strings.length; i++) {
             strings[i] = sc.nextLine();
         }
 
@@ -25,21 +26,11 @@ public class DeleteEqualStrings {
                 }
             }
         }
-/*
-        // another variant to make same deleting duplicates
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (i != j && strings[i] != null && strings[j] != null && strings[i].equals(strings[j])) {
-                    strings[i] = null;
-                    strings[j] = null;
-                }
-            }
-        }
 
-        // fancy way to print array
-        Arrays.stream(string).forEach(System.out::println);
+        /* fancy way to print array
+        Arrays.stream(strings).forEach(System.out::println);
 */
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < strings.length; i++) {
             System.out.println(strings[i]);
         }
     }
