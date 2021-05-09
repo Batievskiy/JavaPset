@@ -14,6 +14,8 @@ public class TriangleArray {
             for (int col = 0; col < result[row].length; col++) {
                 result[row][col] = row + col;
                 System.out.print(result[row][col] + " ");
+                // if want better looking columns, use this:
+                // System.out.printf("%2d ", result[row][col], " ");
             }
             System.out.println();
         }
