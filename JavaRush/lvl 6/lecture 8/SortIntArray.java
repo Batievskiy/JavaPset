@@ -59,7 +59,7 @@ public class SortIntArray {
             }
         }
         System.out.println("from high to low: " + Arrays.toString(intArr));
-
+        sc.close();
     }
 
     // random array filler function for int[]
