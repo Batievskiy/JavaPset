@@ -1,21 +1,16 @@
-// what is a the local variables?
+/* what is a the local variables?
+ * a variables defined withing a block of method of coustructor
+ * local variables are created when the block is entered or the function is called and destroyed
+ * The scope of local variables exists only within the block in which the variable is declared
+ * Initialization of local variable is mandatory!
+*/
 public class LocalVariables {
 
-    public static class Storage {
-        public static int sum = 0; // this is `class` variable and its available in terms of this class
-        public static int count = 0; // same variable is here    }
-    }
-
-    // static methods can use static variables only!
-
-    public static void add(int data) { // `data` variable is available only in this method
-        Storage.sum = Storage.sum + data;
-        Storage.count++;
-    }
-
-    public static void remove(int data) {
-        Storage.sum = Storage.sum - data;
-        Storage.count--;
+    public void PeopleAge() {
+        // age is local variable tor this block specific
+        int age = 0;
+        age = age + 5;
+        System.out.println("people age is: " + age);
     }
 
     public static void main(String[] args) {
@@ -44,9 +39,5 @@ public class LocalVariables {
             }
             System.out.println(b);
         }
-
-        add(44);
-        remove(11);
-        System.out.println(Storage.sum);
     }
 }
