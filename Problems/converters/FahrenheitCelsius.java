@@ -1,49 +1,46 @@
 import java.util.Scanner;
 
 public class FahrenheitCelsius {
+    private static final Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
-        System.out.println("Fahrenheit <-> Celsius converter");
+        System.out.println("---< Fahrenheit / Celsius Converter >---");
         String direction = getDirection();
         int temperature = getTemperature(direction);
         getResult(direction, temperature);
+        sc.close();
     }
 
+    // let's get direction of conversion from user input
     static String getDirection() {
-        Scanner sc = new Scanner(System.in);
         String direction;
         do {
-            System.out.print("Convert from (F or C): ");
+            System.out.print("Convert from F or C: ");
             direction = sc.nextLine();
-        } while (!direction.equals("F") && !direction.equals("C"));
+        } while(!direction.equals("F") && !direction.equals("C"));
         return direction;
     }
 
     // let's get temperature from user
-    static int getTemperature(String direction){
+    static int getTemperature(String direction) {
         int temperature;
-        Scanner sc = new Scanner(System.in);
         System.out.print("temperature in " + direction + ": ");
         while (!sc.hasNextInt()) {
             System.out.print("temperature in " + direction + ": ");
             sc.nextLine();
         }
         temperature = sc.nextInt();
-        sc.close();
         return temperature;
     }
 
     // let's convert Fahrenheit to Celsius
     static int fahrenheitToCelsius(int temperatureF) {
-        int resultCelsius;
-        resultCelsius = (temperatureF - 32) * 5 / 9;
-        return resultCelsius;
+        return (temperatureF - 32) * 5 / 9;
     }
 
     // let's convert Celsius to Fahrenheit
     static int celsiusToFahrenheit(int temperatureC) {
-        int resultFahrenheit;
-        resultFahrenheit = temperatureC * 9 / 5 + 32;
-        return resultFahrenheit;
+        return temperatureC * 9 / 5 + 32;
     }
 
     // let's get result using direction and temperature we got
@@ -51,10 +48,10 @@ public class FahrenheitCelsius {
         int result;
         if (direction.equals("F")) {
             result = fahrenheitToCelsius(temperature);
-            System.out.println("converted t: " + result + "C");
+            System.out.println("result temperature: " + result + "C");
         } else {
             result = celsiusToFahrenheit(temperature);
-            System.out.println("converted t: " + result + "F");
+            System.out.println("result temperature: " + result + "F");
         }
     }
 }
