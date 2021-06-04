@@ -33,7 +33,7 @@ public class TernaryOperatorBasics {
         // nested ternary operators
         int n1 = getInt(), n2 = getInt(), n3 = getInt();
         // to find the largest number
-        int largest = (n1 >= n2) ? ((n1 >= n3) ? n1 : n3) : ((n2 >= n3) ? n2 : n3);
+        int largest = (n1 >= n2) ? (Math.max(n1, n3)) : (Math.max(n2, n3));
         System.out.println("Largest number is: " + largest);
     }
 
