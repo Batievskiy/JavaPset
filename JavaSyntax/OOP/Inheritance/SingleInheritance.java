@@ -22,6 +22,7 @@ public class SingleInheritance {
         }
     }
 
+    // let's use this classes in main function
     public static void main(String[] args) {
         ClassTwo nerd = new ClassTwo();
         nerd.printWeAre();
