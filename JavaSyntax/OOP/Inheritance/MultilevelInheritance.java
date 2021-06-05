@@ -34,4 +34,3 @@ public class MultilevelInheritance {
         grandson.printGrandpa();
     }
 }
-
