@@ -66,7 +66,7 @@ public class CelsiusFahrenheitConverter {
             System.out.print("Enter a temperature in " + directString + ": --> ");
             temperature = sc.nextLine().trim(); // trim() - deletes all whitespaces
             // here we can use String.matches() method with small Regular Expression
-            // ("\\d+) - Must be a string representation of Integer numerical
+            // ("^-?\\d+$") - Must be a string representation of Integer numerical
             // value with 1 (or possibly) more digits.
             if (!temperature.matches("^-?\\d+$")) {
                 System.err.println("Invalid Temperature Supplied (" + temperature + ")!\nTry Again...");
