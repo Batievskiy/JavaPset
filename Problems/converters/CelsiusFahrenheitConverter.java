@@ -4,7 +4,7 @@ import java.util.Scanner;
 // using separate methods for each step
 // this version is a bit better designed
 public class CelsiusFahrenheitConverter {
-    public static Scanner sc = new Scanner(System.in);
+    public static final Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
         // small program introduction
@@ -68,7 +68,7 @@ public class CelsiusFahrenheitConverter {
             // here we can use String.matches() method with small Regular Expression
             // ("\\d+) - Must be a string representation of Integer numerical
             // value with 1 (or possibly) more digits.
-            if (!temperature.matches("\\d+")) {
+            if (!temperature.matches("^-?\\d+$")) {
                 System.err.println("Invalid Temperature Supplied (" + temperature + ")!\nTry Again...");
                 temperature = "";
             }
