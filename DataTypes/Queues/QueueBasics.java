@@ -35,23 +35,30 @@ public class QueueBasics {
         // print out elements of the Queue
         System.out.println("queue -> " + q + "\n");
 
-        // 2. .offer(element) - insert an element in the queue
+        // 2. boolean .offer(element) - insert an element in the queue
         // returns True or False
         // since this method does not throws an exception
         // when the capacity of the container is full since it returns false
         // preferable to .add(element)
-        System.out.println("2. .offer(element) - insert an element in the queue ->");
+        System.out.println("2. boolean .offer(element) - insert an element in the queue ->");
         boolean offered = q.offer(34);
         System.out.println("element \"34\" offered for adding? -> " + offered);
         System.out.println("queue -> " + q + "\n");
 
-        // 3. .remove() - removes the head of the Queue
-        System.out.println("3. .remove() - removes the head of the Queue ->");
+        // 3.1 .remove() - removes the head of the Queue
+        System.out.println("3.1 .remove() - removes the head of the Queue ->");
         // let's remove three elements
         for (int i = 0; i < 3; i++) {
             int removed = q.remove();
-            System.out.println("removed element -> " + removed);
+            System.out.println("removed head -> " + removed);
         }
+        System.out.println("queue -> " + q + "\n");
+
+        // 3.2 .remove(element) - removes the element of the Queue
+        // If there are multiple such objects, then the first occurrence of the object is removed.
+        System.out.println("3.2 .remove() - removes the element of the Queue ->");
+        // let's remove three elements
+        System.out.println("element \"21\" removed? -> " + q.remove(21));
         System.out.println("queue -> " + q + "\n");
 
         // 4. .peek() - view the head of the Queue without removing it
