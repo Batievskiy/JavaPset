@@ -5,7 +5,23 @@ public class ArraysBasics {
         System.out.println("---< Arrays in Java >---\n");
 
         /* An Array is a group of like-typed variables that are referred to by a common name
-         */
+           
+           Array element has its Index from 0 to N and its Value
+           array-name[index] = value;
+           
+           Arrays can store different types of data:
+           byte[]
+           short[]
+           boolean[]
+           long[]
+           float[]
+           double[]
+           char[]
+           
+           Object[] // array of Object
+           Collection[] // array of Collection
+           
+        */
 
         // let's create an array
         // 1. type[] var-name = type[]{value1, value2, ..., valueN};
