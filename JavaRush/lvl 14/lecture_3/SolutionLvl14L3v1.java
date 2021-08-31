@@ -1,41 +1,69 @@
+// Java Rush problem lvl 14 lecture 3
+// change program using Collections
+
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Collections;
 
-// JavaRush lvl 14 lecture 3 problem
-// create program to copy, add and replace elements in ArrayList
-// using Collections
+
 public class SolutionLvl14L3v1 {
-    public static void main(String[] args) {
 
+//    public static void reverse(ArrayList<Integer> list) {
+//        for (int i = 0, size = list.size() - 1; i < list.size() / 2; i++) {
+//            Integer integer = list.get(i);
+//            list.set(i, list.get(size - i));
+//            list.set(size - i, integer);
+//        }
+//    }
+
+    // changed reverse
+    public static void reverse(ArrayList<Integer> list) {
+        Collections.reverse(list);
     }
 
-    public static void copy(ArrayList<String> destination, ArrayList<String> source) {
-//        int sourceSize = source.size();
-//        if (destination.size() < sourceSize) {
-//            throw new IndexOutOfBoundsException("Source does not fir it destination");
-//        }
-//        for (int i = 0; i < sourceSize; i++) {
-//            destination.set(i, source.get(i));
-//        }
-        Collections.copy(destination, source);
-    }
-
-    public static void addAll(ArrayList<String> list, String... strings) {
-//        for (String string : strings) {
-//            list.add(string);
-//        }
-        Collections.addAll(list, strings);
-    }
-
-    public static void replaceAll(ArrayList<String> list, String oldValue, String newValue) {
-//        int listSize = list.size();
-//        for (int i = 0; i < listSize; i++) {
-//            String string = list.get(i);
-//            if (string.equals(oldValue)) {
-//                list.set(i, newValue);
+//    public static void sort(ArrayList<Integer> list) {
+//        int size = list.size();
+//        int greater;
+//        for (int i = 0; i < size; i++) {
+//            for (int j = 1; j < (size - i); j++) {
+//                if (list.get(j - 1) > list.get(j)) {
+//                    greater = list.get(j - 1);
+//                    list.set(j - 1, list.get(j));
+//                    list.set(j, greater);
+//                }
 //            }
 //        }
-        Collections.replaceAll(list, oldValue, newValue);
+//    }
+
+    // changed sort
+    public static void sort(ArrayList<Integer> list) {
+        Collections.sort(list);
     }
 
+//    public static void rotate(ArrayList<Integer> list, int distance) {
+//        for (int i = 0; i < distance; i++) {
+//            list.add(0, list.get(list.size() - 1));
+//            list.remove(list.size() - 1);
+//        }
+//    }
+
+    // changed rotate
+    public static void rotate(ArrayList<Integer> list, int distance) {
+        Collections.rotate(list, distance);
+    }
+
+//    public static void shuffle(ArrayList<Integer> list) {
+//        Random rand = new Random();
+//        for (int i = 0; i < list.size(); i++) {
+//            int randomIndexToSwap = rand.nextInt(list.size());
+//            int temp = list.get(randomIndexToSwap);
+//            list.set(randomIndexToSwap, list.get(i));
+//            list.set(i, temp);
+//        }
+//    }
+
+    // changed shuffle
+    public static void shuffle(ArrayList<Integer> list) {
+        Collections.shuffle(list);
+    }
 }
