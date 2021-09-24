@@ -13,21 +13,19 @@ public enum Box {
     BOMB,
     OPENED,
     CLOSED,
-    FLAGED,
+    FLAGGED,
     BOMBED,
     NOBOMB;
 
     public Object image;
 
-//    Box getNextNumberBox ()
-//    {
-//        return Box.values() [this.ordinal() + 1];
-//    }
-//
-//    int getNumber ()
-//    {
-//        return this.ordinal();
-//    }
+    Box getNextNumberBox() {
+        return Box.values()[this.ordinal() + 1];
+    }
+
+    int getNumber() {
+        return this.ordinal();
+    }
 
 
 }
