@@ -9,9 +9,14 @@ public class MinesweeperGame extends Game {
     private static final int SIDE = 9;
     private GameObject[][] gameField = new GameObject[SIDE][SIDE];
     private int countMinesOnField;
+    private int countFlags;
+    private int countClosedTiles = SIDE * SIDE;
+    private int score;
 
     private static final String MINE = "\uD83D\uDCA3";
+    private static final String FLAG = "\uD83D\uDEA9";
 
+    private boolean isGameStopped;
 
     @Override
     public void initialize() {
@@ -21,10 +26,43 @@ public class MinesweeperGame extends Game {
 
     @Override
     public void onMouseLeftClick(int x, int y) {
-        openTile(x, y);
+        GameObject blind = gameField[y][x];
+        if (isGameStopped) {
+            restart();
+            return;
+        }
+        if (countClosedTiles == SIDE * SIDE && blind.isMine) {
+            blindMineMove(blind.x, blind.y);
+        }
+        openTile(x,y);
+    }
+
+    private void blindMineMove(int x, int y) {
+        setCellValue(x, y, "");
+
+        // for (int yi = 0; yi < SIDE; y++) {
+        //     for (int xj = 0; xj < SIDE; x++) {
+        //         if (!gameField[yi][xj].isMine) {
+        //             setCellValue(xj, yi, MINE);
+        //             continue;
+        //         }
+        //     }
+
+        // }
+    }
+
+    @Override
+    public void onMouseRightClick(int x, int y) {
+        markTile(x, y);
     }
 
     private void createGame() {
+        for (int y = 0; y < SIDE; y++) {
+            for (int x = 0; x <SIDE; x++) {
+                setCellValue(x, y, "");
+            }
+        }
+
         for (int y = 0; y < SIDE; y++) {
             for (int x = 0; x < SIDE; x++) {
                 boolean isMine = getRandomNumber(10) < 1;
@@ -36,6 +74,7 @@ public class MinesweeperGame extends Game {
             }
         }
         countMineNeighbors();
+        countFlags = countMinesOnField;
     }
 
     private List<GameObject> getNeighbors(GameObject gameObject) {
@@ -75,13 +114,75 @@ public class MinesweeperGame extends Game {
     private void openTile(int x, int y) {
         GameObject gameObject = gameField[y][x];
 
+        if (gameObject.isOpen || gameObject.isFlag || isGameStopped) {
+            return;
+        }
+
+        setCellColor(x, y, Color.GREEN);
+
+        gameObject.isOpen = true;
+        countClosedTiles--;
+
         if (gameObject.isMine) {
-            setCellValue(gameObject.x, gameObject.y, MINE);
+            setCellValueEx(gameObject.x, gameObject.y, Color.RED, MINE);
+            gameOver();
+            return;
+        } else if (gameObject.countMineNeighbors == 0) {
+            setCellValue(gameObject.x, gameObject.y, "");
+            List<GameObject> neighbors = getNeighbors(gameObject);
+            for (GameObject neighbor : neighbors) {
+                if (!neighbor.isOpen) {
+                    openTile(neighbor.x, neighbor.y);
+                }
+            }
         } else {
             setCellNumber(x, y, gameObject.countMineNeighbors);
         }
-        gameObject.isOpen = true;
-        setCellColor(x, y, Color.GREEN);
+
+        score += 5;
+        setScore(score);
+
+        if (countClosedTiles == countMinesOnField) {
+            win();
+        }
     }
 
+    private void markTile(int x, int y) {
+        GameObject gameObject = gameField[y][x];
+
+        if (gameObject.isOpen || isGameStopped || (countFlags == 0 && !gameObject.isFlag)) {
+            return;
+        }
+
+        if (gameObject.isFlag) {
+            countFlags++;
+            gameObject.isFlag = false;
+            setCellValue(x, y, "");
+            setCellColor(x, y, Color.ORANGE);
+        } else {
+            countFlags--;
+            gameObject.isFlag = true;
+            setCellValue(x, y, FLAG);
+            setCellColor(x, y, Color.YELLOW);
+        }
+    }
+
+    private void gameOver() {
+        showMessageDialog(Color.BLACK, "Game is Over!", Color.RED, 35);
+        isGameStopped = true;
+    }
+
+    private void win() {
+        showMessageDialog(Color.BLACK, "You Won!", Color.GREEN, 35);
+        isGameStopped = true;
+    }
+
+    private void restart() {
+        countClosedTiles = SIDE * SIDE;
+        score = 0;
+        setScore(score);
+        countMinesOnField = 0;
+        isGameStopped = false;
+        createGame();
+    }
 }
