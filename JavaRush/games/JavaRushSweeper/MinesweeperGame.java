@@ -26,7 +26,7 @@ public class MinesweeperGame extends Game {
 
     @Override
     public void onMouseLeftClick(int x, int y) {
-        GameObject blind = gameField[y][x];
+        GameObject blind = gameField[y][x]; 
         if (isGameStopped) {
             restart();
             return;
@@ -36,19 +36,19 @@ public class MinesweeperGame extends Game {
         }
         openTile(x,y);
     }
-
+    
     private void blindMineMove(int x, int y) {
         setCellValue(x, y, "");
-
-        // for (int yi = 0; yi < SIDE; y++) {
-        //     for (int xj = 0; xj < SIDE; x++) {
-        //         if (!gameField[yi][xj].isMine) {
-        //             setCellValue(xj, yi, MINE);
-        //             continue;
-        //         }
-        //     }
-
-        // }
+        
+        for (int yi = 0; yi < SIDE; y++) {
+            for (int xj = 0; xj < SIDE; x++) {
+                if (!gameField[yi][xj].isMine) {
+                    setCellValue(xj, yi, MINE);
+                    break;
+                }
+            }
+            
+        }
     }
 
     @Override
@@ -62,7 +62,7 @@ public class MinesweeperGame extends Game {
                 setCellValue(x, y, "");
             }
         }
-
+        
         for (int y = 0; y < SIDE; y++) {
             for (int x = 0; x < SIDE; x++) {
                 boolean isMine = getRandomNumber(10) < 1;
