@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>
-        <module>hw_1_base_operations_batiievskyi_yevhenii</module>
+        <module>hw_1_base_operations</module>
     </modules>
 
     <properties>
