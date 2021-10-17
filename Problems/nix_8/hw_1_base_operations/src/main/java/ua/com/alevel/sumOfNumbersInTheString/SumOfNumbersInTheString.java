@@ -4,14 +4,14 @@
 
 package ua.com.alevel.sumOfNumbersInTheString;
 
-import ua.com.alevel.interfaces.GameInterface;
+import ua.com.alevel.interfaces.Game;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SumOfNumbersInTheString implements GameInterface {
+public class SumOfNumbersInTheString implements Game {
 
     public static final String TITLE = "\n---< Parse all numbers from String and Sum them all >---\n";
 
