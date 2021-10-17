@@ -5,7 +5,7 @@
 
 package ua.com.alevel.countAllLatinCyrillicCharsInString;
 
-import ua.com.alevel.interfaces.GameInterface;
+import ua.com.alevel.interfaces.Game;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.TreeMap;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class CountAllLatinCyrillicCharsInString implements GameInterface {
+public class CountAllLatinCyrillicCharsInString implements Game {
 
     private static final String TITLE = "\n---< Number of each character in the String >---\n";
 
