@@ -3,27 +3,25 @@ public class StringReverse {
     public static void main(String[] args) {
 
         String sourceString = "0123456789";
-//        String textString = "hello java world";
+        String textString = "hello java world java";
         System.out.println();
         System.out.println("sourceString -> " + sourceString);
 
 //        System.out.println("forLoopSimpleReverse -> " + reverse(sourceString));
-
 //        System.out.println("recursiveSimpleReverse -> " + reverseRecursive(sourceString));
 
-//        System.out.println("reverseStringBySubstring -> " + reverse(sourceString, "3456"));
+//        System.out.println("reverseStringBySubstring -> " + reverse(textString, "java"));
 
+//        System.out.println("reverseStringStartIndex -> " + reverse(sourceString, 6));
 //        System.out.println("reverseStringStartIndexEndIndex -> " + reverse(sourceString, 1, 7));
-
 //        System.out.println("reverseStringStartIndexEndIndexIsInclusive -> " + reverse(sourceString, 1, 7, false));
 
+//        System.out.println("reverseStringStartChar -> " + reverse(sourceString, '3'));
 //        System.out.println("reverseStringStartCharEndChar -> " + reverse(sourceString, '1', '7'));
-
 //        System.out.println("reverseStringStartCharEndCharIsInclusive -> " + reverse(sourceString, '2', '7', false));
 
 //        System.out.println("reverseStringStartSubstringEndSubstring -> " + reverse(sourceString, "23", "78"));
-
-//        System.out.println("reverseStringStartSubstringEndSubstringIsInclusive -> " + reverse(sourceString, "23", "78", false));
+        System.out.println("reverseStringStartSubstringEndSubstringIsInclusive -> " + reverse(sourceString, "23", "78", false));
 
     }
 
@@ -44,21 +42,64 @@ public class StringReverse {
         return reverseRecursive(sourceString.substring(1)) + sourceString.charAt(0);
     }
 
-    // reverse string from start index(inclusive) to end index(inclusive)
-    public static String reverse(String sourceString, int startIndex, int endIndex) {
+    // reverse string by substring splitting to right and left parts around substring
+    // WARNING - can't replace repeated substrings
+//    public static String reverse(String sourceString, String substring) {
+//
+//        int firstIndexOfSubstring = sourceString.indexOf(substring);
+//        int lastIndexOfSubstring = firstIndexOfSubstring + substring.length();
+//
+//        String leftSubstring = sourceString.substring(0, firstIndexOfSubstring);
+//        String rightSubstring = sourceString.substring(lastIndexOfSubstring);
+//
+//        return leftSubstring + reverseRecursive(substring) + rightSubstring;
+//    }
 
-        if (startIndex > endIndex) {
-            System.err.println("startIndex cannot be greater than endIndex!");
+    // reverse string by substring using replaceAll() can reverse all repeated substrings
+    public static String reverse(String sourceString, String substring) {
+        // check startSubstring and endChar in endSubstring ?
+        if (!sourceString.contains(substring)) {
+            System.err.println("substring isn't found in sourceString");
             throw new IllegalArgumentException();
         }
-        if (startIndex < 0) {
-            System.err.println("startIndex out of bounds");
-            throw new IndexOutOfBoundsException();
+        return sourceString.replaceAll(substring, reverse(substring));
+    }
+
+    // reverse string from startIndex
+    public static String reverse(String sourceString, int startIndex) {
+
+        isStartIndexValid(sourceString, startIndex);
+
+        // check if startIndex is zero then simply return sourceString
+        if (startIndex == 0) return reverse(sourceString);
+
+        String leftSubstring = sourceString.substring(0, startIndex);
+        String rightSubstring = sourceString.substring(startIndex, (sourceString.length()));
+        return leftSubstring + reverse(rightSubstring);
+    }
+
+    // reverse string from startIndex - (inclusive or exclusive)
+    public static String reverse(String sourceString, int startIndex, boolean isInclusive) {
+
+        // if NOT include startIndex - shift startIndex by +1
+        if (!isInclusive) {
+            // else
+            startIndex += 1;
         }
-        if (endIndex > sourceString.length() - 1) {
-            System.err.println("endIndex out of bounds");
-            throw new IndexOutOfBoundsException();
-        }
+
+        isStartIndexValid(sourceString, startIndex);
+
+        if (startIndex == 0) return reverse(sourceString);
+
+        String leftSubstring = sourceString.substring(0, startIndex);
+        String rightSubstring = sourceString.substring(startIndex, (sourceString.length()));
+        return leftSubstring + reverse(rightSubstring);
+    }
+
+    // reverse string from startIndex(inclusive) to endIndex(inclusive)
+    public static String reverse(String sourceString, int startIndex, int endIndex) {
+
+        isStartAndEndIndexValid(sourceString, startIndex, endIndex);
 
         // check if indexes are wrap whole sourceString
         if (startIndex == 0 && endIndex == sourceString.length() - 1) return reverse(sourceString);
@@ -69,20 +110,8 @@ public class StringReverse {
         return leftSubstring + reverse(centerSubstring) + rightSubstring;
     }
 
-    // reverse string from start index to end index - (inclusive or exclusively)
+    // reverse string from startIndex to endIndex - (inclusive or exclusively)
     public static String reverse(String sourceString, int startIndex, int endIndex, boolean isInclusive) {
-        if (startIndex > endIndex) {
-            System.err.println("startIndex cannot be greater than endIndex!");
-            throw new IllegalArgumentException();
-        }
-        if (startIndex < 0) {
-            System.err.println("startIndex out of bounds");
-            throw new IndexOutOfBoundsException();
-        }
-        if (endIndex > sourceString.length() - 1) {
-            System.err.println("endIndex out of bounds");
-            throw new IndexOutOfBoundsException();
-        }
 
         // if NOT include indexes - narrowing indexes range by 1
         if (!isInclusive) {
@@ -90,7 +119,23 @@ public class StringReverse {
             startIndex += 1;
             endIndex -= 1;
         }
+
+        isStartAndEndIndexValid(sourceString, startIndex, endIndex);
+
         return reverse(sourceString, startIndex, endIndex);
+    }
+
+    // reverse string from start char(inclusive)
+    public static String reverse(String sourceString, char startChar) {
+
+        // check startChar in sourceString ?
+        if (!sourceString.contains(Character.toString(startChar))) {
+            System.err.println("startChar isn't found in sourceString");
+            throw new IllegalArgumentException();
+        }
+
+        int indexOfStartChar = sourceString.indexOf(startChar);
+        return reverse(sourceString, indexOfStartChar);
     }
 
     // reverse string from start char(inclusive) to end char(inclusive)
@@ -111,7 +156,7 @@ public class StringReverse {
         return reverse(sourceString, indexOfStartChar, indexOfEndChar);
     }
 
-    // reverse string from start char to end char - (inclusive or exclusively)
+    // reverse string from startChar to endChar - (inclusive or exclusively)
     public static String reverse(String sourceString, char startChar, char endChar, boolean isInclusive) {
         int indexOfStartChar = sourceString.indexOf(startChar);
         int indexOfEndChar = sourceString.lastIndexOf(endChar);
@@ -140,6 +185,7 @@ public class StringReverse {
 
         int indexOfStartSubstring = sourceString.indexOf(startSubstring);
         int indexOfEndSubstring = sourceString.lastIndexOf(endSubstring);
+
         return reverse(sourceString, indexOfStartSubstring, indexOfEndSubstring);
     }
 
@@ -157,26 +203,34 @@ public class StringReverse {
         return reverse(sourceString, indexOfStartSubstring, indexOfEndSubstring);
     }
 
-    // reverse string by substring splitting to right and left parts around substring
-    public static String reverse(String sourceString, String substring) {
-
-        int firstIndexOfSubstring = sourceString.indexOf(substring);
-        int lastIndexOfSubstring = firstIndexOfSubstring + substring.length();
-
-        String leftSubstring = sourceString.substring(0, firstIndexOfSubstring);
-        String rightSubstring = sourceString.substring(lastIndexOfSubstring);
-
-        return leftSubstring + reverseRecursive(substring) + rightSubstring;
-    }
-
-    // reverse string by substring using replaceAll()
-    public static String reverseStringBySubstring2(String sourceString, String substring) {
-        return sourceString.replaceAll(substring, reverse(substring));
-    }
-
     // reverse string preserving words position
     public static String reverseStringPreserveWordPosition(String sourceString) {
         StringBuilder stringBuilder = new StringBuilder();
+        // TODO
         return sourceString;
+    }
+
+    // start index validation
+    private static void isStartIndexValid(String sourceString, int startIndex) {
+        if (startIndex < 0 || startIndex > sourceString.length()) {
+            System.err.println("startIndex out of bounds");
+            throw new IndexOutOfBoundsException();
+        }
+    }
+
+    // startIndex and endIndex validation
+    private static void isStartAndEndIndexValid(String sourceString, int startIndex, int endIndex) {
+        if (startIndex > endIndex) {
+            System.err.println("startIndex cannot be greater than endIndex!");
+            throw new IllegalArgumentException();
+        }
+        if (startIndex < 0) {
+            System.err.println("startIndex out of bounds");
+            throw new IndexOutOfBoundsException();
+        }
+        if (endIndex > sourceString.length() - 1) {
+            System.err.println("endIndex out of bounds");
+            throw new IndexOutOfBoundsException();
+        }
     }
 }
