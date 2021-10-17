@@ -3,7 +3,7 @@ package ua.com.alevel;
 import ua.com.alevel.countAllLatinCyrillicCharsInString.CountAllLatinCyrillicCharsInString;
 import ua.com.alevel.findLessonEndTime.FindLessonEndTime;
 import ua.com.alevel.sumOfNumbersInTheString.SumOfNumbersInTheString;
-import ua.com.alevel.interfaces.GameInterface;
+import ua.com.alevel.interfaces.Game;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Console;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 public class WantToPlayALittleGame {
@@ -77,24 +78,23 @@ public class WantToPlayALittleGame {
     }
 
 
-    private static void playSelectedGame(BufferedReader bufferedReader, GameInterface playableGame) throws IOException {
+    private static void playSelectedGame(BufferedReader bufferedReader, Game game) throws IOException {
         String gameToPlay;
 
         // let's loop the game to chose
         do {
-            playableGame.play(bufferedReader);
+            game.play(bufferedReader);
             System.out.print(WANT_MORE);
             gameToPlay = bufferedReader.readLine();
         } while (isWantMore(gameToPlay));
     }
 
     private static void setConsoleCharSet() throws UnsupportedEncodingException {
-        // SOLUTION HERE - https://newbedev.com/java-how-to-detect-and-change-encoding-of-system-console
         String charSetName;
         // create current console object
         Console currentConsole = System.console();
-        // and check it for null
-        if (currentConsole != null) {
+        // and check it for null or Windows console
+        if (currentConsole != null && System.getProperty("os.name").toLowerCase().contains("windows")) {
             // get charset name from currentConsole object
             charSetName = currentConsole.charset().name();
             // and setting system out according this charset autoFlush true
@@ -102,7 +102,8 @@ public class WantToPlayALittleGame {
             // and setting current inputStreamReader using came sharSetName
             inputStreamReader = new InputStreamReader(System.in, charSetName);
         } else {
-            // if current console is null then stay on current charset
+            // if current console is null then stay on charset UTF-8 autoFlush true
+            System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
             inputStreamReader = new InputStreamReader(System.in);
         }
     }
