@@ -50,13 +50,13 @@
 
 package ua.com.alevel.findLessonEndTime;
 
-import ua.com.alevel.interfaces.GameInterface;
+import ua.com.alevel.interfaces.Game;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.InputMismatchException;
 
-public class FindLessonEndTime implements GameInterface {
+public class FindLessonEndTime implements Game {
 
     private static final String TITLE = "\n---< Lesson End Time by its number >---\n";
     private static final int START_HOUR = 9 * 60; // first lesson hours
