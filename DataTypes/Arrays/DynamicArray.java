@@ -7,7 +7,7 @@ import ua.com.alevel.entity.User;
 public class DynamicArray<T extends User> {
 
     private User[] usersArray;
-    private final int INITIAL_ARRAY_CAPACITY = 2;
+    private final int INITIAL_ARRAY_CAPACITY = 20;
     private int count;
     private int arrayLength;
 
