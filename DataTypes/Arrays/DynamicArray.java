@@ -1,13 +1,13 @@
-package dynamicArray;
+package ua.com.alevel.dynamicArray;
 
-import entity.User;
+// HELPER about Dynamic Array - https://www.javatpoint.com/dynamic-array-in-java
 
-// TODO - https://www.javatpoint.com/dynamic-array-in-java
+import ua.com.alevel.entity.User;
 
 public class DynamicArray<T extends User> {
 
     private User[] usersArray;
-    private final int INITIAL_ARRAY_CAPACITY = 16;
+    private final int INITIAL_ARRAY_CAPACITY = 2;
     private int count;
     private int arrayLength;
 
@@ -29,7 +29,7 @@ public class DynamicArray<T extends User> {
         count++;
     }
 
-    public void remove(String id) {
+    public void delete(String id) {
         int index = getIndex(id);
         if (index == -1) {
             return;
@@ -72,5 +72,53 @@ public class DynamicArray<T extends User> {
         }
         System.out.println("user's id isn't found");
         return -1; // what to return if index not found ???
+    }
+
+    public T getId(String id) {
+        for (User user : usersArray) {
+            if (user.getId().equals(id)) {
+                return (T) user;
+            }
+        }
+        return null;
+    }
+
+    public boolean isContainsId(String id) {
+        for (User user : usersArray) {
+            if (user == null) {
+                continue;
+            }
+            if (user.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isEmpty() {
+        return usersArray.length < 1;
+    }
+
+    private void deleteNull(User[] users) {
+        for (User user : usersArray) {
+            if (users.length <= 1) {
+                return;
+            }
+            if (user == null) {
+                shrinkArraySize();
+                deleteNull(usersArray);
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        deleteNull(usersArray);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (User user : usersArray) {
+            stringBuilder.append(user);
+
+        }
+        return stringBuilder.toString();
     }
 }
