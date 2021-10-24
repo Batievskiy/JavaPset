@@ -1,10 +1,8 @@
 package ua.com.alevel.service;
 
+import ua.com.alevel.dynamicArray.DynamicArray;
 import ua.com.alevel.dao.UserDao;
-import ua.com.alevel.db.UserDB;
 import ua.com.alevel.entity.User;
-
-import java.util.List;
 
 public class UserService {
 
@@ -26,7 +24,7 @@ public class UserService {
         return userDao.findById(id);
     }
 
-    public List<User> findAll() {
+    public DynamicArray<User> findAll() {
         return userDao.findAll();
     }
 }
