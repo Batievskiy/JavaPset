@@ -5,7 +5,6 @@ import ua.com.alevel.service.UserService;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Locale;
 
 public class UserController {
@@ -17,7 +16,7 @@ public class UserController {
     private static final String FIND_ALL = "[ 5 ] findAll users";
     private static final String QUIT = "[ Q ] QUIT.";
     private static final String YOUR_CHOICE = "\nYour choice is -> ";
-    private static final String WRONG_CHOICE = "\n---> There is NO such choice in the menu.\n---> Try again ;)";
+    private static final String WRONG_CHOICE = "\n---> There is NO such choice in the menu.\n---> Try again ;)\n";
 
     private final UserService userService = new UserService();
 
@@ -38,6 +37,7 @@ public class UserController {
     }
 
     private void gamesToPlayMenu() {
+        System.out.println();
         System.out.println(CREATE_USER);
         System.out.println(UPDATE_USER);
         System.out.println(DELETE_USER);
@@ -61,7 +61,7 @@ public class UserController {
                 case "2" -> update(bufferedReader);
                 case "3" -> delete(bufferedReader);
                 case "4" -> findById(bufferedReader);
-                case "5" -> findAll(bufferedReader);
+                case "5" -> findAll();
                 case "q", "й" -> {
                     System.out.println(BYE_BYE);
                     System.exit(0);
@@ -71,78 +71,101 @@ public class UserController {
         }
     }
 
-    private void create(BufferedReader bufferedReader) {
-        System.out.println("UserController.create");
-        try {
-            System.out.print("enter user's name: ");
-            String nameString = bufferedReader.readLine();
+    private static void printError(String error) {
+        System.out.println("\nerror -> " + error);
+    }
 
-            System.out.print("enter user's age: ");
-            String ageString = bufferedReader.readLine();
-            int age = Integer.parseInt(ageString);
+    private void create(BufferedReader bufferedReader) throws IOException {
+        System.out.println("\n...create >---");
+        try {
+            String name = getName(bufferedReader);
+            int age = getAge(bufferedReader);
 
             User user = new User();
-            user.setName(nameString);
+            user.setName(name);
             user.setAge(age);
             userService.create(user);
-        } catch (IOException e) {
-            System.out.println("error: " + e.getMessage());
+        } catch (NullPointerException | NumberFormatException e) {
+            printError(e.toString());
         }
     }
 
-    private void update(BufferedReader bufferedReader) {
-        System.out.println("UserController.update");
+    private void update(BufferedReader bufferedReader) throws IOException {
+        System.out.println("\n...update >---");
         try {
-            System.out.print("enter user's id: ");
-            String id = bufferedReader.readLine();
-            System.out.print("enter user's name: ");
-            String nameString = bufferedReader.readLine();
-            System.out.print("enter user's age: ");
-            String ageString = bufferedReader.readLine();
-            int age = Integer.parseInt(ageString);
+            String id = getUserId(bufferedReader);
+            String name = getName(bufferedReader);
+            int age = getAge(bufferedReader);
 
             User user = new User();
             user.setId(id);
-            user.setName(nameString);
+            user.setName(name);
             user.setAge(age);
-            userService.create(user);
-        } catch (IOException e) {
-            System.out.println("error: " + e.getMessage());
+            userService.update(user);
+        } catch (NullPointerException | NumberFormatException e) {
+            printError(e.toString());
         }
     }
 
-    private void delete(BufferedReader bufferedReader) {
-        System.out.println("UserController.delete");
+    private void delete(BufferedReader bufferedReader) throws IOException {
+        System.out.println("\n...delete >---");
         try {
-            System.out.print("enter user's id: ");
-            String id = bufferedReader.readLine();
+            String id = getUserId(bufferedReader);
             userService.delete(id);
-        } catch (IOException e) {
-            System.out.println("error: " + e.getMessage());
+        } catch (NullPointerException e) {
+            printError(e.toString());
         }
     }
 
-    private void findById(BufferedReader bufferedReader) {
-        System.out.println("UserController.findById");
+    private void findById(BufferedReader bufferedReader) throws IOException {
+        System.out.println("\n...findById >---");
         try {
-            System.out.print("enter user's id: ");
-            String id = bufferedReader.readLine();
-
-            User user = userService.findById(id);
-            System.out.println("user = " + user);
-        } catch (IOException e) {
-            System.out.println("error: " + e.getMessage());
+            String id = getUserId(bufferedReader);
+            printResult(String.valueOf(userService.findById(id.trim())).trim());
+        } catch (NullPointerException e) {
+            printError(e.toString());
         }
     }
 
-    private void findAll(BufferedReader bufferedReader) {
-        System.out.println("UserController.findAll");
-        List<User> usersList = userService.findAll();
-        if (usersList != null && usersList.size() != 0) {
-            for (User currentUser : usersList) {
-                System.out.println("user = " + currentUser);
+    private void findAll() {
+        System.out.println("\n...findAll >---");
+        printResult(String.valueOf(userService.findAll()).trim());
+    }
+
+    public void printResult(String str) {
+        System.out.println("\n...result >---\n" + str + "\n");
+    }
+
+    public String getUserId(BufferedReader bufferedReader) throws IOException {
+        String id;
+        do {
+            System.out.print("enter user's id -> ");
+            id = bufferedReader.readLine();
+        } while (id.isEmpty());
+        return id;
+    }
+
+    public String getName(BufferedReader bufferedReader) throws IOException {
+        String name;
+        do {
+            System.out.print("enter user's name -> ");
+            name = bufferedReader.readLine();
+        } while (name.isEmpty());
+        return name;
+    }
+
+    private int getAge(BufferedReader bufferedReader) throws IOException {
+        String ageString;
+        int age;
+        do {
+            System.out.print("enter user's age (0 to 120 years) -> ");
+            ageString = bufferedReader.readLine();
+            if (!ageString.matches("^(12[0-0]|1[01][0-9]|[1-9]?[0-9])$")) {
+                ageString = "";
             }
-        }
+        } while (ageString.isEmpty());
+        age = Integer.parseInt(ageString);
+        return age;
     }
 
     private static void setConsoleCharSet() throws UnsupportedEncodingException {
